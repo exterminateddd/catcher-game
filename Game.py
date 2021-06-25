@@ -1,6 +1,7 @@
 from Field import Field
 from pprint import pprint
 from itertools import chain
+from utils import rem_space
 
 
 class Game:
@@ -27,7 +28,11 @@ class Game:
 
     def output(self):
         pprint(self.field.__list__())
-        print('  =' * 10 + '-  ' + str(self.count) + '  -' + 10 * '=  ')
+        print('  =' * 8 + '- ' + 'Hidden left: '+ rem_space(str(len([i for i in list(
+            chain(*[[p for p in r if p.catchable and p.hidden and not p.caught] for r in self.field.field])) if i])), 2) + '  -' + 8 * '=  ')
+        print('  =' * 8 + '- ' + 'Visible left: ' + rem_space(str(len([i for i in list(
+            chain(*[[p for p in r if (p.catchable) and (not p.hidden) and (not p.caught)] for r in self.field.field])) if i])), 2) + ' -' + 8 * '=  ')
+        print('  =' * 10 + ('>-  ' if len(str(self.count)) == 1 else '>- ') + str(self.count) + ' -<' + 10 * '=  ')
         print((self.messages[-1] + '  ' + (65-len(self.messages[-1])) * '*') if self.messages else '')
 
     def __int__(self):
